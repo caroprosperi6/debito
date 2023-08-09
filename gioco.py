@@ -6,8 +6,8 @@ WHITE = (255,255,255)
 BEIGE = (235,235,235)
 
 #PARAMETRI FINESTRA
-screen_height = 600
-screen_length = 600
+screen_height = 400
+screen_length = 800
 
 #SETTAGGI BASE FINESTRA
 WINDOW_SIZE = (screen_length, screen_height)
@@ -15,8 +15,6 @@ screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 pygame.display.set_caption("RUN")
 screen.fill(WHITE)
 
-#PUNTEGGIO
-punteggio_alto = 0
 
 #CLOCK PER TEMPORIZZARE IL PROGRAMMA 
 clock = pygame.time.Clock()
@@ -25,16 +23,24 @@ fps = 60
 #PARAMETRO GRAVITA' 
 gravity = 0.6
 
-#SFONDO SCHERMO
+#SFODNO CIELO 
+cielo_image= pygame.image.load('cielo.png')
+pos_cielo_x = 0
+pos_cielo_y = 0
+cielo_image = pygame.transform.scale(cielo_image, (800, 400))
 
 #IMMAGINE VITE
 vite_image = pygame.image.load('cuore.png')
 vite = 3
-pos_vite_x = 450
-pos_vite_y = 560
+pos_vite_x = 650
+pos_vite_y = 350
 vite_image = pygame.transform.scale(vite_image, (50, 50))
 
 #IMMAGINE PERSONAGGIO
+personaggio_image = pygame.image.load('personaggio.png')
+pos_personaggio_x = 30
+pos_personaggio_y = 200
+personaggio_image = pygame.transform.scale(personaggio_image, (200, 80))
 
 
 #IMMAGINE GAME OVER
@@ -54,12 +60,21 @@ while True:
             pygame.quit()
             sys.exit()
 
+        
+    # #movimento personaggio 
+    # keys = pygame.key.get_pressed()
+    
+    # if keys[pygame.K_UP]:
+        
+        
+
 
     #funzione che serve per rigenerare lo schermo ad ogni giro del ciclo 
     screen.fill(BLACK)
     # all_sprites_list.update()
 
-
+    screen.blit(cielo_image, (pos_cielo_x, pos_cielo_y))
+    screen.blit(personaggio_image, (pos_personaggio_x , pos_personaggio_y))
 
 
     if vite == 3:
