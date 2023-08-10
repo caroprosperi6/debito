@@ -29,11 +29,7 @@ pos_cielo_x = 0
 pos_cielo_y = 0
 cielo_image = pygame.transform.scale(cielo_image, (800, 400))
 
-#SFONDO TERRENO
-terreno_image = pygame.image.load('terreno_png')
-pos_terreno_x = 0
-pos_terreno_y = 200
-terreno_image = pygame.transform.scale(terreno_image, (800, 400))
+
 #IMMAGINE VITE
 vite_image = pygame.image.load('cuore.png')
 vite = 3
@@ -102,7 +98,7 @@ while True:
 
     screen.blit(cielo_image, (pos_cielo_x, pos_cielo_y))
     screen.blit(personaggio_image, (pos_personaggio_x , pos_personaggio_y))
-
+    screen.blit(terreno_image,(pos_terreno_x, pos_terreno_y))
 
     if vite == 3:
         screen.blit(vite_image, (pos_vite_x, pos_vite_y))
