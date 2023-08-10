@@ -24,7 +24,7 @@ fps = 60
 gravity = 0.6
 
 #SFODNO CIELO 
-cielo_image= pygame.image.load('cielo.png')
+cielo_image= pygame.image.load('cielo2.png')
 pos_cielo_x = 0
 pos_cielo_y = 0
 cielo_image = pygame.transform.scale(cielo_image, (800, 400))
@@ -98,7 +98,7 @@ while True:
 
     screen.blit(cielo_image, (pos_cielo_x, pos_cielo_y))
     screen.blit(personaggio_image, (pos_personaggio_x , pos_personaggio_y))
-    screen.blit(terreno_image,(pos_terreno_x, pos_terreno_y))
+  
 
     if vite == 3:
         screen.blit(vite_image, (pos_vite_x, pos_vite_y))
