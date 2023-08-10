@@ -40,7 +40,7 @@ vite_image = pygame.transform.scale(vite_image, (50, 50))
 #IMMAGINE PERSONAGGIO
 personaggio_image = pygame.image.load('personaggio.png')
 pos_personaggio_x = 20
-pos_personaggio_y = 200
+pos_personaggio_y = 230
 personaggio_image = pygame.transform.scale(personaggio_image, (150, 100))
 velocità_salto = 8
 velocità_discesa = 10
