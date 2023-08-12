@@ -1,5 +1,7 @@
 import pygame, sys
 from pygame.locals import *
+from personaggio import Personaggio
+from ostacolo import Ostacolo
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -38,21 +40,24 @@ pos_vite_y = 350
 vite_image = pygame.transform.scale(vite_image, (50, 50))
 
 #IMMAGINE PERSONAGGIO
-personaggio_image = pygame.image.load('personaggio.png')
 pos_personaggio_x = 20
 pos_personaggio_y = 220
-personaggio_image = pygame.transform.scale(personaggio_image, (150, 100))
+personaggio = Personaggio(150, 100, 'personaggio.png', pos_personaggio_x, pos_personaggio_y)
 velocità_salto = 8
 velocità_discesa = 10
 salti_max = 20
 cont_salto = 0
 cont_discesa = 0
 first_time = True
+#IMMAGINE OSTACOLO 
+ostacolo = Ostacolo(80, 100, 'ostacolo.png')
 #IMMAGINE GAME OVER
 game_over = pygame.image.load('gameover.png')
 pos_over_x = 150
 pos_over_y = 120
 game_over = pygame.transform.scale(game_over, (300, 300))
+
+
 
 
 #CICLIO FONDAMENTALE
@@ -72,7 +77,7 @@ while True:
 
     if keys[pygame.K_UP] and cont_salto < salti_max and first_time:
         cont_salto += 1
-        pos_personaggio_y -= velocità_salto
+        personaggio.rect.y -= velocità_salto
         pygame.time.wait(5)
     elif cont_salto > 0:
         if first_time == True:
@@ -82,11 +87,11 @@ while True:
         cont_discesa -= 1 
 
         if cont_discesa == 0:
-            pos_personaggio_y = 220
+            personaggio.rect.y = 220
             cont_salto = 0
             first_time = True
         elif cont_discesa > 0:
-            pos_personaggio_y += velocità_discesa
+            personaggio.rect.y += velocità_discesa
         else: 
             print(" c'è un errore")
             
@@ -94,10 +99,11 @@ while True:
 
     #funzione che serve per rigenerare lo schermo ad ogni giro del ciclo 
     screen.fill(BLACK)
-    # all_sprites_list.update()
 
     screen.blit(cielo_image, (pos_cielo_x, pos_cielo_y))
-    screen.blit(personaggio_image, (pos_personaggio_x , pos_personaggio_y))
+    
+    personaggio.draw(screen)
+    ostacolo.draw(screen)
   
 
     if vite == 3:
@@ -117,6 +123,7 @@ while True:
         pygame.display.flip()
         pygame.time.wait(3000)
         vite = 3 
+
 
 
     pygame.display.flip()
