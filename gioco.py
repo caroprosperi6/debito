@@ -40,7 +40,7 @@ vite_image = pygame.transform.scale(vite_image, (50, 50))
 #IMMAGINE PERSONAGGIO
 personaggio_image = pygame.image.load('personaggio.png')
 pos_personaggio_x = 20
-pos_personaggio_y = 230
+pos_personaggio_y = 220
 personaggio_image = pygame.transform.scale(personaggio_image, (150, 100))
 velocità_salto = 8
 velocità_discesa = 10
@@ -82,14 +82,14 @@ while True:
         cont_discesa -= 1 
 
         if cont_discesa == 0:
-            pos_personaggio_y = 200
+            pos_personaggio_y = 220
+            cont_salto = 0
+            first_time = True
         elif cont_discesa > 0:
             pos_personaggio_y += velocità_discesa
         else: 
             print(" c'è un errore")
-        if cont_discesa == 0:
-            cont_salto = 0
-            first_time = True
+            
     
 
     #funzione che serve per rigenerare lo schermo ad ogni giro del ciclo 
