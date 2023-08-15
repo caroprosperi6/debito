@@ -7,6 +7,7 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 BEIGE = (235,235,235)
 
+
 #PARAMETRI FINESTRA
 screen_height = 400
 screen_length = 900
@@ -53,10 +54,12 @@ first_time = True
 ostacolo_lenght = 100
 ostacolo_height = 90
 pos_ostacolo_y  = 220
+
 ostacolo  = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 300, pos_ostacolo_y)
 ostacolo2 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 600, pos_ostacolo_y)
 ostacolo3 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 900, pos_ostacolo_y)
 ostacolo4 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 960, pos_ostacolo_y)
+
 velocità_ostacolo = 4
 pos_ostacolo_rigenerato = 1000
 
@@ -106,6 +109,7 @@ while True:
         cont_salto += 1
         personaggio.rect.y -= velocità_salto
         pygame.time.wait(5)
+
     elif cont_salto > 0:
         if first_time == True:
             cont_discesa = int(cont_salto * velocità_salto / velocità_discesa) 
@@ -149,6 +153,7 @@ while True:
     screen.fill(BLACK)
     
     pygame.draw.rect(screen, WHITE, (rectangle_x, rectangle_y, rectangle_width, rectangle_height))
+
     screen.blit(cielo_image, (pos_cielo_x, pos_cielo_y))
 
     if (pygame.sprite.collide_mask(personaggio, ostacolo) or pygame.sprite.collide_mask(personaggio, ostacolo2) or pygame.sprite.collide_mask(personaggio, ostacolo3) or pygame.sprite.collide_mask(personaggio, ostacolo4)) and invulnerabilità == 80:
@@ -184,6 +189,7 @@ while True:
         pygame.display.flip()
         pygame.time.wait(3000)
         vite = 3 
+
 
     #DISPLAY PUNTEGGIO 
     #chiedo come aggiungere punteggio sullo schermo 
