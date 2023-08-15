@@ -9,7 +9,7 @@ BEIGE = (235,235,235)
 
 #PARAMETRI FINESTRA
 screen_height = 400
-screen_length = 800
+screen_length = 900
 
 #SETTAGGI BASE FINESTRA
 WINDOW_SIZE = (screen_length, screen_height)
@@ -20,16 +20,14 @@ screen.fill(WHITE)
 
 #CLOCK PER TEMPORIZZARE IL PROGRAMMA 
 clock = pygame.time.Clock()
-fps = 60
+fps = 120
 
-#PARAMETRO GRAVITA' 
-gravity = 0.6
 
 #SFODNO CIELO 
 cielo_image= pygame.image.load('cielo2.png')
 pos_cielo_x = 0
 pos_cielo_y = 0
-cielo_image = pygame.transform.scale(cielo_image, (800, 400))
+cielo_image = pygame.transform.scale(cielo_image, (screen_length, screen_height))
 
 
 #IMMAGINE VITE
@@ -43,14 +41,26 @@ vite_image = pygame.transform.scale(vite_image, (50, 50))
 pos_personaggio_x = 20
 pos_personaggio_y = 220
 personaggio = Personaggio(150, 100, 'personaggio.png', pos_personaggio_x, pos_personaggio_y)
-velocità_salto = 8
-velocità_discesa = 10
-salti_max = 20
+velocità_salto = 6
+velocità_discesa = 5
+salti_max = 40
 cont_salto = 0
 cont_discesa = 0
 first_time = True
+
+
 #IMMAGINE OSTACOLO 
-ostacolo = Ostacolo(80, 100, 'ostacolo.png')
+ostacolo_lenght = 100
+ostacolo_height = 90
+pos_ostacolo_y  = 220
+ostacolo  = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 300, pos_ostacolo_y)
+ostacolo2 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 600, pos_ostacolo_y)
+ostacolo3 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 900, pos_ostacolo_y)
+ostacolo4 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 960, pos_ostacolo_y)
+velocità_ostacolo = 4
+pos_ostacolo_rigenerato = 1000
+
+
 #IMMAGINE GAME OVER
 game_over = pygame.image.load('gameover.png')
 pos_over_x = 150
@@ -58,11 +68,28 @@ pos_over_y = 120
 game_over = pygame.transform.scale(game_over, (300, 300))
 
 
+invulnerabilità = 80
+punteggio = 0
+punteggio_più_alto = 0
+
+# Posizione e dimensioni del rettangolo
+rectangle_x = 430
+rectangle_y = 10
+rectangle_width = 900
+rectangle_height = 90
+
+
+#SUONO GIOCO ---> chiedi come aggiungere suono 
+# jump_sound = pygame.mixer.Sound('resources/jump.wav')
+# die_sound = pygame.mixer.Sound('resources/die.wav')
+# checkPoint_sound = pygame.mixer.Sound('resources/checkPoint.wav')
 
 
 #CICLIO FONDAMENTALE
 while True:
     
+    punteggio += 1
+
     mouse = pygame.mouse.get_pos()
     #CICLIO PER CHIUDERE IL PROGRAMMA QUANDO L'UTENTE VUOLE CHIUDERE LA FINESTRA 
     for event in pygame.event.get():
@@ -86,24 +113,58 @@ while True:
 
         cont_discesa -= 1 
 
-        if cont_discesa == 0:
+        if cont_discesa <= 0:
             personaggio.rect.y = 220
             cont_salto = 0
             first_time = True
         elif cont_discesa > 0:
             personaggio.rect.y += velocità_discesa
-        else: 
-            print(" c'è un errore")
+       
             
+    if ostacolo.rect.x < -120:
+        ostacolo.rect.x = pos_ostacolo_rigenerato
+    else: 
+        ostacolo.rect.x -= velocità_ostacolo
     
+    if ostacolo2.rect.x < -120:
+        ostacolo2.rect.x = pos_ostacolo_rigenerato
+    else: 
+        ostacolo2.rect.x -= velocità_ostacolo 
+    
+    if ostacolo3.rect.x < -120:
+        ostacolo3.rect.x = pos_ostacolo_rigenerato
+    else: 
+        ostacolo3.rect.x -= velocità_ostacolo 
+    
+    if ostacolo4.rect.x < -120:
+        ostacolo4.rect.x = pos_ostacolo_rigenerato
+    else: 
+        ostacolo4.rect.x -= velocità_ostacolo 
+
+    
+    
+  
 
     #funzione che serve per rigenerare lo schermo ad ogni giro del ciclo 
     screen.fill(BLACK)
-
-    screen.blit(cielo_image, (pos_cielo_x, pos_cielo_y))
     
+    pygame.draw.rect(screen, WHITE, (rectangle_x, rectangle_y, rectangle_width, rectangle_height))
+    screen.blit(cielo_image, (pos_cielo_x, pos_cielo_y))
+
+    if (pygame.sprite.collide_mask(personaggio, ostacolo) or pygame.sprite.collide_mask(personaggio, ostacolo2) or pygame.sprite.collide_mask(personaggio, ostacolo3) or pygame.sprite.collide_mask(personaggio, ostacolo4)) and invulnerabilità == 80:
+        vite -= 1  
+        invulnerabilità = 0
+    
+    if invulnerabilità < 80:
+        invulnerabilità += 1
+
+
     personaggio.draw(screen)
     ostacolo.draw(screen)
+    ostacolo2.draw(screen)
+    ostacolo3.draw(screen)
+    ostacolo4.draw(screen)
+
   
 
     if vite == 3:
@@ -124,7 +185,8 @@ while True:
         pygame.time.wait(3000)
         vite = 3 
 
-
+    #DISPLAY PUNTEGGIO 
+    #chiedo come aggiungere punteggio sullo schermo 
 
     pygame.display.flip()
     
