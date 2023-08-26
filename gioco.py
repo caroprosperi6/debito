@@ -6,6 +6,7 @@ from ostacolo import Ostacolo
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 BEIGE = (235,235,235)
+pygame.init()
 
 
 #PARAMETRI FINESTRA
@@ -53,12 +54,12 @@ first_time = True
 #IMMAGINE OSTACOLO 
 ostacolo_lenght = 100
 ostacolo_height = 90
-pos_ostacolo_y  = 220
+pos_ostacolo_y  = 215
 
-ostacolo  = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 300, pos_ostacolo_y)
-ostacolo2 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 600, pos_ostacolo_y)
-ostacolo3 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 900, pos_ostacolo_y)
-ostacolo4 = Ostacolo(ostacolo_lenght, ostacolo_height, 'ostacolo.png', 960, pos_ostacolo_y)
+ostacolo  = Ostacolo(ostacolo_lenght, ostacolo_height, 'cactus.png', 300, pos_ostacolo_y)
+ostacolo2 = Ostacolo(ostacolo_lenght, ostacolo_height, 'cactus.png', 600, pos_ostacolo_y)
+ostacolo3 = Ostacolo(ostacolo_lenght, ostacolo_height, 'cactus.png', 900, pos_ostacolo_y)
+ostacolo4 = Ostacolo(ostacolo_lenght, ostacolo_height, 'cactus.png', 960, pos_ostacolo_y)
 
 velocità_ostacolo = 4
 pos_ostacolo_rigenerato = 1000
@@ -66,14 +67,13 @@ pos_ostacolo_rigenerato = 1000
 
 #IMMAGINE GAME OVER
 game_over = pygame.image.load('gameover.png')
-pos_over_x = 150
-pos_over_y = 120
-game_over = pygame.transform.scale(game_over, (300, 300))
+pos_over_x = 100
+pos_over_y = 30
+game_over = pygame.transform.scale(game_over, (700, 400))
 
 
 invulnerabilità = 80
-punteggio = 0
-punteggio_più_alto = 0
+
 
 # Posizione e dimensioni del rettangolo
 rectangle_x = 430
@@ -81,17 +81,18 @@ rectangle_y = 10
 rectangle_width = 900
 rectangle_height = 90
 
+punteggio = 0 
+pause = False 
 
-#SUONO GIOCO ---> chiedi come aggiungere suono 
-# jump_sound = pygame.mixer.Sound('resources/jump.wav')
-# die_sound = pygame.mixer.Sound('resources/die.wav')
-# checkPoint_sound = pygame.mixer.Sound('resources/checkPoint.wav')
+#oggetto font per stampare punteggio 
+font = pygame.font.Font(None, 36)
 
+bonus = False
 
 #CICLIO FONDAMENTALE
 while True:
     
-    punteggio += 1
+
 
     mouse = pygame.mouse.get_pos()
     #CICLIO PER CHIUDERE IL PROGRAMMA QUANDO L'UTENTE VUOLE CHIUDERE LA FINESTRA 
@@ -103,7 +104,18 @@ while True:
         
     #movimento personaggio 
     keys = pygame.key.get_pressed()
-
+    if pause == True:
+        screen.blit(game_over, (pos_over_x, pos_over_y))
+        pygame.display.flip()
+    #if che fa ricominciare partita 
+    if keys[pygame.K_SPACE] and pause == True:
+        pause = False
+        velocità_salto = 6
+        velocità_ostacolo = 4
+        punteggio = 0 
+    if pause == True:
+        screen.blit(game_over, (pos_over_x, pos_over_y))
+        pygame.display.flip()
 
     if keys[pygame.K_UP] and cont_salto < salti_max and first_time:
         cont_salto += 1
@@ -185,16 +197,41 @@ while True:
         screen.blit(vite_image, (pos_vite_x, pos_vite_y))
         
     if vite == 0:
+        # screen.fill(BLACK)
         screen.blit(game_over, (pos_over_x, pos_over_y))
         pygame.display.flip()
-        pygame.time.wait(3000)
+        pause = True
+        velocità_ostacolo = 0
+        velocità_salto = 0           
         vite = 3 
+        ostacolo.rect.x  = 300
+        ostacolo2.rect.x =  600
+        ostacolo3.rect.x =  900
+        ostacolo4.rect.x = 960
 
+       
+  
+    #DISPLAY PUNTEGGIO
+    if pause == False:
+        punteggio += 1
+        if bonus == True:
+            punteggio += 1 
+            bonus_surface = font.render('Bonus!', True, (0,0,0))
+            aggiunta = len(str(punteggio))
+            screen.blit(bonus_surface, (60 + aggiunta*5 ,10))
 
-    #DISPLAY PUNTEGGIO 
-    #chiedo come aggiungere punteggio sullo schermo 
+    if punteggio % 1000 == 0:
+        bonus = True 
+    if punteggio % 1000 == 500:
+        bonus = False
+    
+    
+    
+    punteggio_surface = font.render(str(punteggio), True, (0,0,0))
+    screen.blit(punteggio_surface, (10,10))
 
-    pygame.display.flip()
+    if pause == False:
+        pygame.display.flip()
     
     # aspetto il prossimo frame
     clock.tick(fps)
